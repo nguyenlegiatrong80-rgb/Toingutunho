@@ -1,0 +1,149 @@
+--[[
+    NAME: TÔ GÀ HUB (VERSION: NO KEY)
+    SLOGAN: VIỆT NAM LÀ SỐ 1
+    STYLE: HOHO HUB (BLACK & GOLD)
+    DESCRIPTION: TẤT CẢ TÍNH NĂNG CỦA HOHO HUB TRONG DIỆN MẠO TÔ GÀ
+]]
+
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local pGui = player:WaitForChild("PlayerGui")
+
+-- ==========================================
+-- 1. PHẦN INTRO (CHỮ CHẠY HÀO HÙNG)
+-- ==========================================
+local function PlayIntro()
+    local introGui = Instance.new("ScreenGui")
+    introGui.Name = "ToGaIntro"
+    introGui.DisplayOrder = 999
+    introGui.Parent = pGui
+
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.new(1, 0, 1, 0)
+    bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    bg.Parent = introGui
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(0.8, 0, 0.4, 0)
+    textLabel.Position = UDim2.new(0.1, 0, 0.3, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.fromRGB(255, 215, 0) -- Màu vàng Gold
+    textLabel.Font = Enum.Font.GothamBold
+    textLabel.TextSize = 45
+    textLabel.TextTransparency = 1
+    textLabel.Parent = bg
+
+    local lines = {
+        "VIỆT NAM LÀ SỐ 1! 🇻🇳",
+        "ĐẢNG CỘNG SẢN MUÔN NĂM!",
+        "HỒ CHỦ TỊCH MUÔN NĂM!",
+        "TÔ GÀ HUB - KHÔNG CẦN KEY"
+    }
+
+    for _, content in pairs(lines) do
+        textLabel.Text = content
+        TweenService:Create(textLabel, TweenInfo.new(0.8), {TextTransparency = 0}):Play()
+        task.wait(1.5)
+        TweenService:Create(textLabel, TweenInfo.new(0.8), {TextTransparency = 1}):Play()
+        task.wait(0.8)
+    end
+    
+    TweenService:Create(bg, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+    task.wait(1)
+    introGui:Destroy()
+end
+
+-- ==========================================
+-- 2. PHẦN GIAO DIỆN CHÍNH (HOHO STYLE)
+-- ==========================================
+local function CreateMainUI()
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "ToGaHub_Final"
+    ScreenGui.Parent = pGui
+
+    -- Khung chính
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Size = UDim2.new(0, 450, 0, 280)
+    MainFrame.Position = UDim2.new(0.5, -225, 0.5, -140)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Đen nhám
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Parent = ScreenGui
+
+    -- Bo góc và Viền vàng
+    Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
+    local Stroke = Instance.new("UIStroke", MainFrame)
+    Stroke.Color = Color3.fromRGB(255, 215, 0)
+    Stroke.Thickness = 2
+
+    -- Tiêu đề
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 60)
+    Title.Text = "🍜 TÔ GÀ HUB | NO KEY 🇻🇳"
+    Title.TextColor3 = Color3.fromRGB(255, 215, 0)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 22
+    Title.BackgroundTransparency = 1
+    Title.Parent = MainFrame
+
+    -- Nút bấm chính
+    local LaunchBtn = Instance.new("TextButton")
+    LaunchBtn.Size = UDim2.new(0, 300, 0, 60)
+    LaunchBtn.Position = UDim2.new(0.5, -150, 0.45, 0)
+    LaunchBtn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    LaunchBtn.Text = "MỞ HOHO HUB (TÔ GÀ EDIT)"
+    LaunchBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    LaunchBtn.Font = Enum.Font.GothamBold
+    LaunchBtn.TextSize = 16
+    LaunchBtn.Parent = MainFrame
+    Instance.new("UICorner", LaunchBtn).CornerRadius = UDim.new(0, 8)
+
+    -- Dòng Slogan cuối
+    local Note = Instance.new("TextLabel")
+    Note.Size = UDim2.new(1, 0, 0, 40)
+    Note.Position = UDim2.new(0, 0, 0.8, 0)
+    Note.Text = "Cali tuổi l*n - Việt Nam vô đối"
+    Note.TextColor3 = Color3.fromRGB(180, 180, 180)
+    Note.Font = Enum.Font.GothamItalic
+    Note.TextSize = 13
+    Note.BackgroundTransparency = 1
+    Note.Parent = MainFrame
+
+    -- LOGIC TẢI SCRIPT
+    LaunchBtn.MouseButton1Click:Connect(function()
+        LaunchBtn.Text = "ĐANG NẤU... VUI LÒNG ĐỢI"
+        -- Tải Hoho Hub chính chủ
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
+        
+        -- Hiệu ứng đóng UI Tô Gà sau khi tải thành công
+        task.wait(1)
+        MainFrame:TweenSize(UDim2.new(0,0,0,0), "Out", "Quad", 0.5)
+        task.wait(0.5)
+        ScreenGui:Destroy()
+    end)
+
+    -- KÉO THẢ UI
+    local dragging, dragStart, startPos
+    MainFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true; dragStart = input.Position; startPos = MainFrame.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    end)
+end
+
+-- ==========================================
+-- 3. THỰC THI TOÀN BỘ QUY TRÌNH
+-- ==========================================
+task.spawn(function()
+    PlayIntro()
+    CreateMainUI()
+end)
