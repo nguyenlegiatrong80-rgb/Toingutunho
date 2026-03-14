@@ -1,0 +1,112 @@
+-- [[ 1006 HUB - REDZ UI EDITION ]] --
+local RedzLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/REDZHUB/RedzLibV2/main/Source.lua"))()
+
+-- 1. HÀM PHÁT GIỌNG NÓI 1006 (KHI BẬT TÍNH NĂNG)
+local function Play1006Voice(text)
+    -- Tiếng cười đặc trưng
+    local s = Instance.new("Sound", game:GetService("SoundService"))
+    s.SoundId = "rbxassetid://6340211440"
+    s.Volume = 2
+    s:Play()
+    
+    -- Giọng nói quái vật (Monster Pitch)
+    local v = Instance.new("Sound", game:GetService("SoundService"))
+    v.SoundId = "rbxassetid://9061036224"
+    v.Pitch = 0.6 -- Tông trầm rùng rợn
+    v:Play()
+    
+    -- Thông báo góc màn hình
+    RedzLib:SetClipboard("Đã kích hoạt: " .. text) -- Lưu log vào clipboard
+    game:GetService("Debris"):AddItem(s, 5)
+    game:GetService("Debris"):AddItem(v, 5)
+end
+
+-- 2. KHỞI TẠO CỬA SỔ CHUẨN ẢNH (SideBar + Search)
+local Window = RedzLib:MakeWindow({
+    Name = "1006 HUB | THE PROTOTYPE",
+    SubTitle = "Blox Fruits VNG - Tiếng Việt",
+    Color = Color3.fromRGB(255, 200, 0) -- Màu vàng 1006
+})
+
+-- HIỆU ỨNG RƯỚM MÁU HP (VIGNETTE)
+local Blood = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+local Img = Instance.new("ImageLabel", Blood)
+Img.Size = UDim2.new(1,0,1,0); Img.Image = "rbxassetid://12109692881"
+Img.ImageColor3 = Color3.fromRGB(150,0,0); Img.BackgroundTransparency = 1; Img.ImageTransparency = 1
+
+local function PulseBlood(v)
+    game:GetService("TweenService"):Create(Img, TweenInfo.new(0.5), {ImageTransparency = v and 0.4 or 1}):Play()
+end
+
+-- 3. CÁC TAB CHỨC NĂNG
+Window:AddSearch("Tìm kiếm tính năng...") -- Thanh tìm kiếm trên cùng
+
+local MainTab = Window:MakeTab("Tự Động Farm", "rbxassetid://4483345998")
+local PoppyTab = Window:MakeTab("Poppy Ch.5", "rbxassetid://10723343321")
+local SecureTab = Window:MakeTab("Bảo Mật", "rbxassetid://10734950309")
+
+-- [[ TAB FARM ]] --
+MainTab:AddSection("Hệ Thống Farm Siêu Nhanh")
+
+MainTab:AddToggle({
+    Name = "Auto Farm Level + Quest",
+    Description = "Tự nhận NV và đánh quái (Siêu Khỏe)",
+    Default = false,
+    Callback = function(v)
+        _G.AutoFarm = v
+        if v then Play1006Voice("Auto Farm Level") end
+    end
+})
+
+MainTab:AddToggle({
+    Name = "Bàn Tay 1006 Gom Quái",
+    Description = "Tầm xa 1000m - Có bàn tay kéo quái",
+    Default = false,
+    Callback = function(v)
+        _G.BringMobs = v
+        if v then 
+            Play1006Voice("Gom Quái")
+            -- Code Logic Bring Mobs Hand ở đây
+        end
+    end
+})
+
+-- [[ TAB POPPY PLAYTIME ]] --
+PoppyTab:AddSection("Thực Thể 1006 - Chapter 5")
+
+PoppyTab:AddButton({
+    Name = "1006 Đâm Xuyên & Bay (Animation)",
+    Callback = function()
+        Play1006Voice("Dịch Chuyển 1006")
+        PulseBlood(true)
+        -- Chèn đoạn code Tween bay của bạn tại đây
+        task.wait(3)
+        PulseBlood(false)
+    end
+})
+
+PoppyTab:AddButton({
+    Name = "HÌNH ẢNH 1006 (CUỐI PHẦN 5)",
+    Callback = function()
+        Play1006Voice("Kích hoạt Thực Thể")
+    end
+})
+
+-- [[ TAB BẢO MẬT ]] --
+SecureTab:AddSection("Chống Ban & Quản Trị Viên")
+
+SecureTab:AddToggle({
+    Name = "Tự Thoát Khi Có Admin",
+    Default = true,
+    Callback = function(v) _G.AntiAdmin = v end
+})
+
+SecureTab:AddButton({
+    Name = "Xóa Menu (Tắt Script)",
+    Callback = function() 
+        game:GetService("CoreGui"):FindFirstChild("RedzLib"):Destroy() 
+    end
+})
+
+-- CHÀO MỪNG
+Play1006Voice("Giao Diện 1006 Hub")
