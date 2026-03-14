@@ -1,7 +1,7 @@
 -- [[ 1006 HUB - REDZ UI EDITION ]] --
 local RedzLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/REDZHUB/RedzLibV2/main/Source.lua"))()
 
--- 1. HÀM PHÁT GIỌNG NÓI 1006 (KHI BẬT TÍNH NĂNG)
+-- 1. HÀM PHÁT GIỌNG NÓI 1006 (KHI BẬT TÍNH NĂNG) 
 local function Play1006Voice(text)
     -- Tiếng cười đặc trưng
     local s = Instance.new("Sound", game:GetService("SoundService"))
