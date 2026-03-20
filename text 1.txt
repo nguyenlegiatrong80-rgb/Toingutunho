@@ -1,0 +1,88 @@
+local RedzLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3TH-PRIV/RedzLibV2/main/redzlib.lua"))()
+local FileName = "OceanHub_Key_VV.txt"
+
+-- --- DANH SÁCH MÃ KEY HỢP LỆ (Bạn có thể thêm mã mới ở đây) ---
+local ValidKeys = {
+    ["Ocean_Pre_001"] = true,
+    ["Ocean_Pre_002"] = true,
+    ["Ocean_Pre_999"] = true
+}
+
+-- --- HÀM LOAD MENU CHÍNH (SAU KHI ĐÚNG KEY) ---
+local function LoadMainHub()
+    -- Link Raw GitHub chứa bản Ocean Hub [Full] có Mỏ neo của bạn
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/real_fanmemesea/OceanHub/main/Main.lua"))()
+end
+
+-- --- KIỂM TRA FILE KEY TRÊN MÁY ---
+local function CheckSavedKey()
+    if isfile(FileName) then
+        local SavedKey = readfile(FileName)
+        if ValidKeys[SavedKey] then
+            return true
+        end
+    end
+    return false
+end
+
+if CheckSavedKey() then
+    LoadMainHub()
+else
+    -- GIAO DIỆN NHẬP KEY (REDZ UI - LIGHT THEME)
+    local Window = RedzLib:MakeWindow({
+        Title = "OCEAN HUB [PRE]",
+        SubTitle = "by real_fanmemesea",
+        Color = Color3.fromRGB(0, 190, 255),
+        MinimizeKey = Enum.KeyCode.RightControl
+    })
+
+    RedzLib:SetTheme("Light")
+
+    local Tab = Window:MakeTab({ "Nhập Key", "key" })
+
+    Tab:AddSection({ Name = "--- NHẬP MÃ KEY CỦA BẠN ---" })
+
+    Tab:AddTextBox({
+        Name = "Ví dụ: Ocean_Pre_001",
+        Default = "",
+        PlaceholderText = "Nhập mã key vĩnh viễn...",
+        Callback = function(Value)
+            _G.InputKey = Value
+        end
+    })
+
+    Tab:AddButton({
+        Name = "Xác Nhận & Lưu Key",
+        Callback = function()
+            if ValidKeys[_G.InputKey] then
+                writefile(FileName, _G.InputKey) -- Lưu mã key cụ thể vào máy
+                RedzLib:Notify({
+                    Title = "Thành Công!",
+                    Content = "Mã xác thực chính xác! Đang mở Hub...",
+                    Duration = 3
+                })
+                task.wait(1)
+                Window:Destroy()
+                LoadMainHub()
+            else
+                RedzLib:Notify({
+                    Title = "Lỗi!",
+                    Content = "Mã Key không hợp lệ hoặc đã hết hạn!",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    Tab:AddButton({
+        Name = "Lấy Mã Key (Liên Hệ TikTok)",
+        Callback = function()
+            setclipboard("https://www.tiktok.com/@real_fanmemesea")
+            RedzLib:Notify({
+                Title = "Thông Báo",
+                Content = "Đã copy link TikTok @real_fanmemesea!",
+                Duration = 5
+            })
+        end
+    })
+end
